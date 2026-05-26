@@ -1,6 +1,8 @@
 {
-  "timestamp": "2026-05-26T18:25:51Z",
-  "last_event": {
+  "created_at": "2026-05-26T18:25:51Z",
+  "tool": "semilla_learning_harness",
+  "version": "0.2",
+  "event": {
     "timestamp": "2026-05-26T18:25:51Z",
     "event": "LEARNING_TASK_CREATED",
     "source_id": "inkos",
@@ -21,6 +23,5 @@
     "task_hash": "1b8c202dd85a3814f075dd259d9356783ee3fa9f0a49c565fd5247cc9c71f74a",
     "status": "READY_FOR_QWEN",
     "dangerous_actions_executed": false
-  },
-  "next": "Process task with Qwen."
+  }
 }
