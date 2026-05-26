@@ -4,8 +4,8 @@
 from __future__ import annotations
 
 import argparse
-import json
 import hashlib
+import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -42,6 +42,21 @@ def load_sources() -> List[Dict[str, Any]]:
     data = read_json(SOURCE_MAP)
     return data.get("sources", [])
 
+def already_processed(source_id: str) -> bool:
+    log = MEMORY / "learning_events.jsonl"
+    if not log.exists():
+        return False
+    for line in log.read_text(encoding="utf-8", errors="replace").splitlines():
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except Exception:
+            continue
+        if event.get("source_id") == source_id:
+            return True
+    return False
+
 def choose_source(sources: List[Dict[str, Any]], source_id: Optional[str]) -> Dict[str, Any]:
     if source_id:
         for source in sources:
@@ -50,9 +65,14 @@ def choose_source(sources: List[Dict[str, Any]], source_id: Optional[str]) -> Di
         raise SystemExit(f"No existe source id: {source_id}")
 
     priority_order = {"alta": 0, "media-alta": 1, "media": 2, "baja": 3}
-    pending = [s for s in sources if str(s.get("status", "")).startswith("pendiente")]
+    pending = [
+        s for s in sources
+        if str(s.get("status", "")).startswith("pendiente")
+        and not already_processed(str(s.get("id")))
+    ]
+
     if not pending:
-        raise SystemExit("No hay fuentes pendientes en source_map.")
+        raise SystemExit("No hay fuentes pendientes nuevas en source_map.")
 
     pending.sort(key=lambda s: priority_order.get(str(s.get("priority", "")).lower(), 9))
     return pending[0]
@@ -94,6 +114,7 @@ No propongas instalaciones.
 No conectes credenciales.
 No hables de otros proyectos.
 No des teoría genérica.
+No inventes haber leído archivos que no se te han pasado.
 
 ## Criterio de éxito
 
@@ -101,17 +122,14 @@ La respuesta debe convertirse en aprendizaje guardable para Qwen Semilla.
 """
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Semilla Xaman learning harness v0.1")
-    parser.add_argument("--source-id", default=None, help="ID concreto de data/source_map.json")
-    parser.add_argument("--dry-run", action="store_true", help="No escribe archivos")
+    parser = argparse.ArgumentParser(description="Semilla Xaman learning harness")
+    parser.add_argument("--source-id", default=None)
     args = parser.parse_args()
 
     for path in [INBOX, MEMORY, STATUS, EVIDENCE]:
         path.mkdir(parents=True, exist_ok=True)
 
-    sources = load_sources()
-    source = choose_source(sources, args.source_id)
-
+    source = choose_source(load_sources(), args.source_id)
     task = build_task(source)
     task_hash = sha(task)
     task_name = f"{stamp()}_{source.get('id')}.learning_task.md"
@@ -125,32 +143,24 @@ def main() -> int:
         "task_file": str(task_path.relative_to(REPO)),
         "task_hash": task_hash,
         "status": "READY_FOR_QWEN",
-        "dangerous_actions_executed": False,
+        "dangerous_actions_executed": False
     }
-
-    if args.dry_run:
-        print(task)
-        print(json.dumps(event, ensure_ascii=False, indent=2))
-        return 0
 
     task_path.write_text(task, encoding="utf-8")
     append_jsonl(MEMORY / "learning_events.jsonl", event)
 
-    status = {
+    write_json(STATUS / "semilla_learning_status.json", {
         "timestamp": now_iso(),
         "last_event": event,
-        "next": "Process task with Qwen, then score and review output.",
-    }
+        "next": "Process task with Qwen."
+    })
 
-    evidence = {
+    write_json(EVIDENCE / f"learning_task_{stamp()}_{source.get('id')}.json", {
         "created_at": now_iso(),
         "tool": "semilla_learning_harness",
-        "version": "0.1",
-        "event": event,
-    }
-
-    write_json(STATUS / "semilla_learning_status.json", status)
-    write_json(EVIDENCE / f"learning_task_{stamp()}_{source.get('id')}.json", evidence)
+        "version": "0.2",
+        "event": event
+    })
 
     print(f"[SEMILLA-LEARNING] Task: {task_path}")
     print(f"[SEMILLA-LEARNING] Source: {source.get('id')}")
