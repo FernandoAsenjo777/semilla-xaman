@@ -58,6 +58,20 @@ function Write-State {
     return $Payload
 }
 
+function Quote-Arg {
+    param([string]$Value)
+
+    if ($null -eq $Value) {
+        return '""'
+    }
+
+    if ($Value -match '[\s"]') {
+        return '"' + ($Value -replace '"','\"') + '"'
+    }
+
+    return $Value
+}
+
 function Invoke-Git {
     param(
         [Parameter(Mandatory=$true)]
@@ -66,9 +80,7 @@ function Invoke-Git {
 
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = "git"
-    foreach ($a in $Args) {
-        [void]$psi.ArgumentList.Add($a)
-    }
+    $psi.Arguments = (($Args | ForEach-Object { Quote-Arg $_ }) -join " ")
     $psi.WorkingDirectory = $Repo
     $psi.RedirectStandardOutput = $true
     $psi.RedirectStandardError = $true
@@ -266,10 +278,9 @@ Si falta información, dilo.
 
     $psi = New-Object System.Diagnostics.ProcessStartInfo
     $psi.FileName = "ollama"
-    [void]$psi.ArgumentList.Add("run")
-    [void]$psi.ArgumentList.Add($Model)
-    [void]$psi.ArgumentList.Add($FullPrompt)
+    $psi.Arguments = "run " + (Quote-Arg $Model)
     $psi.WorkingDirectory = $Repo
+    $psi.RedirectStandardInput = $true
     $psi.RedirectStandardOutput = $true
     $psi.RedirectStandardError = $true
     $psi.UseShellExecute = $false
@@ -279,6 +290,9 @@ Si falta información, dilo.
     $p.StartInfo = $psi
 
     [void]$p.Start()
+
+    $p.StandardInput.Write($FullPrompt)
+    $p.StandardInput.Close()
 
     $stdout = $p.StandardOutput.ReadToEnd()
     $stderr = $p.StandardError.ReadToEnd()
@@ -366,3 +380,4 @@ if ($result -eq "OK") {
 }
 
 throw "Unexpected result: $result"
+
