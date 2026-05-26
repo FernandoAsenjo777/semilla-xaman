@@ -64,18 +64,42 @@ function Commit-SafeArtifacts {
         [string]$Message
     )
 
-    git add README.md docs data tools runtime evidence 2>$null
+    $OldEap = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
+
+    $GitAddOutput = git add README.md docs data tools runtime evidence 2>&1
+    $GitAddCode = $LASTEXITCODE
+
+    $ErrorActionPreference = $OldEap
+
+    if ($GitAddOutput) {
+        $GitAddOutput | Out-Host
+    }
+
+    if ($GitAddCode -ne 0) {
+        throw "git add failed with code $GitAddCode"
+    }
 
     $Changes = git diff --cached --name-only
+
     if (![string]::IsNullOrWhiteSpace($Changes)) {
         git commit -m $Message
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "git commit failed with code $LASTEXITCODE"
+        }
+
         git push origin main
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "git push failed with code $LASTEXITCODE"
+        }
+
         Write-Host "[SEMILLA-CYCLE] Commit/push OK"
     } else {
         Write-Host "[SEMILLA-CYCLE] No changes to commit"
     }
 }
-
 function Invoke-LearningHarness {
     param(
         [string]$SourceId
@@ -223,3 +247,4 @@ if ($Loop) {
 } else {
     $null = Run-One-Cycle -CurrentIdleCycles 0
 }
+
