@@ -72,7 +72,7 @@ def choose_source(sources: List[Dict[str, Any]], source_id: Optional[str]) -> Di
     ]
 
     if not pending:
-        raise SystemExit("No hay fuentes pendientes nuevas en source_map.")
+        return None
 
     pending.sort(key=lambda s: priority_order.get(str(s.get("priority", "")).lower(), 9))
     return pending[0]
@@ -130,6 +130,20 @@ def main() -> int:
         path.mkdir(parents=True, exist_ok=True)
 
     source = choose_source(load_sources(), args.source_id)
+
+    if source is None:
+        event = {
+            "timestamp": now_iso(),
+            "event": "IDLE_DONE",
+            "status": "IDLE_DONE",
+            "message": "No hay fuentes pendientes nuevas en source_map.",
+            "dangerous_actions_executed": False
+        }
+        write_json(STATUS / "semilla_learning_status.json", event)
+        write_json(EVIDENCE / f"learning_idle_done_{stamp()}.json", event)
+        print("[SEMILLA-LEARNING] IDLE_DONE: No hay fuentes pendientes nuevas en source_map.")
+        return 0
+
     task = build_task(source)
     task_hash = sha(task)
     task_name = f"{stamp()}_{source.get('id')}.learning_task.md"
@@ -169,3 +183,4 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
+
