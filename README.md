@@ -1,50 +1,55 @@
-# Semilla Xaman
+﻿# Semilla Xaman
 
-Semilla Xaman es el proyecto para convertir a Qwen local en una IA cada vez mas capaz, medible y util mediante una capa externa de aprendizaje, memoria, evaluacion, algoritmos, feedback y herramientas controladas.
+Semilla Xaman es la escuela externa para que Qwen local evolucione hacia Xaman local.
 
 ## Objetivo principal
 
 Qwen es el objeto destino.
 
-ChatGPT/Xaman actua como mentor, arquitecto y auditor durante la construccion.
-Qwen debe evolucionar desde modelo local que responde tareas hacia Qwen Semilla: una IA local con metodo, memoria, criterio, evaluacion y capacidad de mejora progresiva.
+ChatGPT/Xaman actúa como mentor, arquitecto y auditor durante la construcción, pero el objetivo es dotar a Qwen de:
 
-## Idea central
-
-No se espera que Qwen mejore solo por magia ni por reentrenamiento inmediato.
-Se construye una escuela alrededor de Qwen:
-
-- tareas pequenas,
-- contexto controlado,
 - memoria,
-- RAG,
-- evaluacion,
-- feedback,
-- dataset,
+- método,
+- evaluación,
 - algoritmos,
-- calidad de codigo,
 - creatividad,
-- supervision humana.
+- dataset,
+- aprendizaje progresivo,
+- herramientas controladas,
+- criterio operativo.
 
-## Dos piernas de aprendizaje
+## Principio
 
-### Pierna 1 · Tecnica-operativa
+Qwen no mejora solo por responder más.
 
-Para que Qwen aprenda a pensar, programar, estructurar, validar, usar herramientas y resolver problemas.
+Qwen mejora por sistema:
+
+modelo local + memoria + RAG + evaluación + algoritmos + reglas + feedback + dataset + herramientas controladas.
+
+## Escuela de dos piernas
+
+### Pierna 1 · Técnica-operativa
+
+Para que Qwen aprenda a pensar, programar, estructurar, validar y usar herramientas.
 
 ### Pierna 2 · Interpretativa-creativa
 
-Para que Qwen aprenda a entender prompts, leer intencion, interpretar estilo, diseno, narrativa, marca y creatividad aplicada.
+Para que Qwen aprenda a entender prompts, intención, lectura, estilo, diseño, narrativa, marca y creatividad aplicada.
 
-## Primera arquitectura objetivo
+## Ciclo objetivo
 
-source_map -> learning_harness -> qwen_task -> qwen_output -> quality_score -> xaman_review -> dataset_builder -> memory -> next_task
+source_map
+→ learning_harness
+→ qwen_task
+→ qwen_output
+→ quality_score
+→ xaman_review
+→ dataset_builder
+→ memory
+→ next_task
 
 ## Regla de seguridad
 
-Qwen no ejecuta acciones peligrosas directamente.
-Toda accion con riesgo debe pasar por control humano, evidencias, validacion y rollback cuando proceda.
-
-## Estado
-
-Repositorio inicializado como base limpia para la Escuela de Qwen Semilla.
+Automatizar lo repetible.
+Bloquear lo peligroso.
+Resumir lo importante.

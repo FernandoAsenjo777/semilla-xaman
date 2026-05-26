@@ -1,0 +1,16 @@
+﻿{
+    "timestamp":  "2026-05-26T18:13:19Z",
+    "repo":  "C:\\Users\\fernando\\semilla-xaman",
+    "status":  "OK",
+    "created":  [
+                    "README.md",
+                    "docs/qwen_semilla_school_v1.md",
+                    "docs/automation_model_v1.md",
+                    "data/source_map.json",
+                    "tools/semilla_permission_policy.json",
+                    "tools/semilla_autopilot.ps1",
+                    "runtime/",
+                    "evidence/"
+                ],
+    "dangerous_actions_executed":  false
+}

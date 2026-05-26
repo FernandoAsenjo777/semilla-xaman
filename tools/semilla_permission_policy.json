@@ -1,0 +1,27 @@
+﻿{
+  "policy_name": "semilla_xaman_permission_policy_v1",
+  "auto_allowed": [
+    "create_docs",
+    "create_data_files",
+    "create_runtime_files",
+    "create_evidence",
+    "create_safe_tasks",
+    "read_public_sources",
+    "generate_summaries",
+    "generate_scores",
+    "commit_safe_artifacts",
+    "push_safe_artifacts"
+  ],
+  "requires_human_approval": [
+    "install_software",
+    "connect_credentials",
+    "delete_files",
+    "move_critical_files",
+    "modify_system_config",
+    "activate_paid_services",
+    "deploy_publicly",
+    "run_dangerous_commands",
+    "change_permissions"
+  ],
+  "rule": "Automatizar lo repetible. Bloquear lo peligroso. Resumir lo importante."
+}

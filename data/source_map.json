@@ -1,0 +1,86 @@
+﻿{
+  "project": "semilla-xaman",
+  "objective": "Convertir informacion externa en aprendizaje estructurado para Qwen Semilla.",
+  "sources": [
+    {
+      "id": "javascript_algorithms",
+      "source": "trekhleb/javascript-algorithms",
+      "type": "repo",
+      "teaches": "algoritmos y estructuras de datos",
+      "leg": "tecnica-operativa",
+      "modules": ["xq_algorithmic_thinker", "xq_data_structure_selector"],
+      "priority": "alta",
+      "status": "pendiente_destilar"
+    },
+    {
+      "id": "clean_code_js",
+      "source": "ryanmcdermott/clean-code-javascript",
+      "type": "repo",
+      "teaches": "codigo limpio, claridad, mantenibilidad",
+      "leg": "tecnica-operativa",
+      "modules": ["xq_code_quality_gate", "xq_refactor_advisor"],
+      "priority": "alta",
+      "status": "pendiente_destilar"
+    },
+    {
+      "id": "web_skills",
+      "source": "andreasbm/web-skills",
+      "type": "repo",
+      "teaches": "mapa de habilidades web",
+      "leg": "tecnica-operativa",
+      "modules": ["xq_skill_tree", "xq_capability_gap_detector"],
+      "priority": "media-alta",
+      "status": "pendiente_destilar"
+    },
+    {
+      "id": "todomvc",
+      "source": "tastejs/todomvc",
+      "type": "repo",
+      "teaches": "comparacion justa de frameworks con una misma especificacion",
+      "leg": "tecnica-operativa",
+      "modules": ["xq_framework_comparator"],
+      "priority": "alta",
+      "status": "pendiente_destilar"
+    },
+    {
+      "id": "free_for_dev",
+      "source": "ripienaar/free-for-dev",
+      "type": "repo",
+      "teaches": "herramientas gratuitas y free tiers",
+      "leg": "tecnica-operativa",
+      "modules": ["xq_free_tool_finder"],
+      "priority": "media-alta",
+      "status": "pendiente_destilar"
+    },
+    {
+      "id": "inkos",
+      "source": "InkOS conceptual",
+      "type": "reference",
+      "teaches": "continuidad, multiagente, anti-slop, consistencia",
+      "leg": "interpretativa-creativa",
+      "modules": ["xq_continuity_auditor", "xq_anti_slop_filter"],
+      "priority": "alta",
+      "status": "pendiente_destilar"
+    },
+    {
+      "id": "n8n",
+      "source": "n8n conceptual",
+      "type": "reference",
+      "teaches": "flujos, triggers, nodos, logs, supervision humana",
+      "leg": "tecnica-operativa",
+      "modules": ["xq_flow_engine", "xq_human_gate"],
+      "priority": "alta",
+      "status": "pendiente_destilar"
+    },
+    {
+      "id": "dyad",
+      "source": "Dyad conceptual",
+      "type": "reference",
+      "teaches": "app builder local-first no-code",
+      "leg": "tecnica-operativa",
+      "modules": ["xq_local_app_builder", "xq_preview_loop"],
+      "priority": "media",
+      "status": "pendiente_validar"
+    }
+  ]
+}
